@@ -347,7 +347,37 @@ public abstract class AbstractTag implements Serializable
 
         iis.reset();
         return buffer;
+      } /*******************************************************************************************************************
+     * 
+     * Reads float values from the given image input stream.
+     * 
+     * @param  iis          the stream to read from
+     * @param  valueOffset  the offset to read at
+     * @param  valuesCount  the number of values to read
+     * @return              the floats
+     * @throws IOException  if a I/O error occurs
+     * 
+     ******************************************************************************************************************/
+    @Nonnull
+    protected float[] readFloatValues (@Nonnull final ImageInputStream iis,
+                                   final long valueOffset,
+                                   @Nonnegative final int valuesCount) 
+      throws IOException
+      {
+        float[] buffer = new int[valuesCount];
+        iis.mark();
+        iis.seek(valueOffset);
+
+        for (int i = 0; i < valuesCount; i++)
+          {
+            buffer[i] = iis.readFloat();
+          }
+
+        iis.reset();
+
+        return buffer;
       }
+
 
     /*******************************************************************************************************************
      * 

@@ -277,8 +277,7 @@ public class TIFFTag extends AbstractTag
               break;
 
             case TYPE_FLOAT:
-              logger.warning("WARNING: TIFF type not implemented [FLOAT]: " + type); // TODO
-              iis.readUnsignedInt();
+              floatValue = readFloatValues(iis, valuesCount);
               break;
 
             case TYPE_DOUBLE:
@@ -526,6 +525,29 @@ public class TIFFTag extends AbstractTag
           }
 
         return readIntValues(iis, valueOffset, valuesCount);
+      }
+
+    /*******************************************************************************************************************
+     * 
+     * Reads float values.
+     * 
+     * @param iis            the input stream
+     * @param valueCount     the count of values to read
+     * @return               the value
+     * @throws IOException   if an I/O error occurs
+     * 
+     *******************************************************************************/
+    private float[] readFloatValues (ImageInputStream iis,
+                                 int valuesCount) throws IOException
+      {
+        long valueOffset = iis.readUnsignedInt();
+
+        if (valuesCount == 1)
+          {
+            return new float[] { Float.fromIntBits((int)valueOffset) };
+          }
+
+        return readFloatValues(iis, valueOffset, valuesCount);
       }
 
     /*******************************************************************************************************************
